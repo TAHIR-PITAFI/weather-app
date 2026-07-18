@@ -339,10 +339,9 @@ export default function WeatherApp() {
                 ))}
               </div>
             </div>
-            <div className="hidden sm:block lg:col-span-2 rounded-2xl md:rounded-[2rem] overflow-hidden relative h-[200px] md:min-h-[260px] border border-slate-800">
-              <div className="absolute inset-0 bg-indigo-950/20 pointer-events-none z-10" />
+            <div className="lg:col-span-2 rounded-2xl md:rounded-[2rem] overflow-hidden h-[200px] md:h-[260px] border border-slate-800">
               <iframe width="100%" height="100%"
-                style={{ border: 0, position: 'absolute', inset: 0 }}
+                style={{ border: 0 }}
                 loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"
                 src={`https://maps.google.com/maps?q=${weatherData.latitude},${weatherData.longitude}&z=11&output=embed`}
               />
