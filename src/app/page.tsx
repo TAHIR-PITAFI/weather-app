@@ -25,24 +25,42 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pb-12">
-          <div className="p-6 md:p-10 rounded-2xl md:rounded-[2rem] bg-slate-900/60 border border-slate-800">
-            <p className="text-indigo-400/60 text-[10px] font-bold tracking-[0.25em] uppercase mb-2 md:mb-3">Developed By</p>
-            <p className="font-bold text-indigo-300 text-lg md:text-xl mb-1">Tahir Hussain</p>
-            <p className="text-sm leading-relaxed text-slate-400 font-medium">BSAI Student · Islamabad, Pakistan</p>
+        <footer className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-6 pb-16">
+          {/* Dev Card */}
+          <div className="p-8 rounded-3xl bg-slate-900/40 border border-indigo-500/10 shadow-xl shadow-indigo-950/5 relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold tracking-wider uppercase mb-4 bg-indigo-950/60 border border-indigo-900/40 text-indigo-400">
+                👤 Developer Profile
+              </div>
+              <h3 className="font-extrabold text-white text-2xl tracking-tight mb-1">Tahir Hussain</h3>
+              <p className="text-slate-400 text-sm font-medium mb-4">BSAI Student · AI Specialist in training</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-slate-500 border-t border-slate-800/60 pt-4 mt-4">
+              <span className="flex items-center gap-1 font-medium"><strong className="text-slate-400">Location:</strong> Islamabad, Pakistan</span>
+            </div>
           </div>
-          <div className="p-6 md:p-10 rounded-2xl md:rounded-[2rem] bg-slate-900/60 border border-slate-800">
-            <p className="text-amber-400/60 text-[10px] font-bold tracking-[0.25em] uppercase mb-2 md:mb-3">PM Accelerator</p>
-            <p className="font-bold text-amber-300 text-base md:text-lg mb-2 md:mb-3">Product Manager Accelerator</p>
-            <p className="text-slate-400 text-xs md:text-sm leading-relaxed mb-3 md:mb-4 font-medium">
-              Designed to support PM professionals through every stage of their careers — from entry-level to Directors — developing PM, AI and leadership skills.
-            </p>
-            <div className="flex flex-wrap gap-x-3 md:gap-x-4 gap-y-2 text-xs text-slate-500 border-t pt-3 md:pt-4 font-medium"
-               style={{ borderColor: 'rgba(245,158,11,0.1)' }}>
-              <span><strong className="text-slate-300">Location:</strong> Boston, MA</span>
-              <span><strong className="text-slate-300">Est.</strong> 2020</span>
-              <span><a href="https://www.pmaccelerator.io/" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">www.pmaccelerator.io</a></span>
-              <span><strong className="text-slate-300">Phone:</strong> +1 (954) 889-1063</span>
+
+          {/* PM Accelerator Card */}
+          <div className="p-8 rounded-3xl bg-slate-900/40 border border-amber-500/10 shadow-xl shadow-amber-950/5 relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold tracking-wider uppercase mb-4 bg-amber-950/60 border border-amber-900/40 text-amber-400">
+                🚀 Strategic Partner
+              </div>
+              <h3 className="font-extrabold text-white text-xl tracking-tight mb-2">Product Manager Accelerator</h3>
+              <p className="text-slate-400 text-xs md:text-sm leading-relaxed mb-6 font-medium">
+                Designed to support PM professionals through every stage of their careers — from entry-level to Directors — developing core PM, AI, and leadership capabilities.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-[11px] text-slate-500 border-t border-slate-800/60 pt-4">
+              <div><strong className="text-slate-400 block mb-0.5">Location</strong> Boston, MA</div>
+              <div><strong className="text-slate-400 block mb-0.5">Established</strong> 2020</div>
+              <div className="col-span-2 mt-1">
+                <a href="https://www.pmaccelerator.io/" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1">
+                  🌐 Visit Website
+                </a>
+              </div>
             </div>
           </div>
         </footer>
