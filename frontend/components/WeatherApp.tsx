@@ -284,10 +284,10 @@ export default function WeatherApp() {
               style={{ background: 'linear-gradient(135deg, #0F172A 0%, #0C1A2E 60%, #0A2540 100%)', border: '1px solid rgba(56,189,248,0.12)' }}>
               <div className="absolute top-0 right-0 w-40 md:w-56 h-40 md:h-56 bg-sky-500/10 rounded-full blur-[80px] pointer-events-none" />
               <div className="relative z-10 flex justify-between items-start">
-                <div>
-                  <p className="text-sky-400/70 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-1 md:mb-2">Current Conditions</p>
-                  <h2 className="text-xl md:text-2xl font-bold text-white leading-tight">{weatherData.resolvedLocationName}</h2>
-                  {weatherData.startDate && <p className="text-sky-300/50 text-xs mt-1">📅 {weatherData.startDate?.split('T')[0]} → {weatherData.endDate?.split('T')[0]}</p>}
+                <div className="flex-1 min-w-0 pr-4">
+                  <p className="text-sky-400/70 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-1 md:mb-2 truncate">Current Conditions</p>
+                  <h2 className="text-xl md:text-2xl font-bold text-white leading-tight break-words line-clamp-2">{weatherData.resolvedLocationName}</h2>
+                  {weatherData.startDate && <p className="text-sky-300/50 text-xs mt-1 truncate">📅 {weatherData.startDate?.split('T')[0]} → {weatherData.endDate?.split('T')[0]}</p>}
                 </div>
                 {getWeatherIcon(parsedWeather.current?.weather_code ?? parsedWeather.daily?.weather_code?.[0] ?? 0, "w-12 h-12 md:w-16 md:h-16 drop-shadow-lg")}
               </div>
@@ -413,7 +413,7 @@ export default function WeatherApp() {
                 </div>
               </div>
 
-              <div className="sm:flex-1 sm:max-w-[220px] px-4 py-3 rounded-xl relative"
+              <div className="sm:flex-1 sm:max-w-[220px] px-4 py-3 rounded-xl relative min-w-0 overflow-hidden"
                 style={{ background: '#111', border: '1px solid #1E293B' }}>
                 {record.notes ? <p className="text-slate-300 text-sm pr-6 truncate">{record.notes}</p>
                   : <p className="text-slate-600 text-sm italic">No notes added</p>}
