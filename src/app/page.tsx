@@ -31,10 +31,10 @@ export default function Home() {
             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
             <div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold tracking-wider uppercase mb-4 bg-indigo-950/60 border border-indigo-900/40 text-indigo-400">
-                👤 Developer Profile
+                👤 Developed By
               </div>
               <h3 className="font-extrabold text-white text-2xl tracking-tight mb-1">Tahir Hussain</h3>
-              <p className="text-slate-400 text-sm font-medium mb-4">BSAI Student · AI Specialist in training</p>
+              <p className="text-slate-400 text-sm font-medium mb-4">BS AI Student</p>
             </div>
             <div className="flex items-center gap-2 text-xs text-slate-500 border-t border-slate-800/60 pt-4 mt-4">
               <span className="flex items-center gap-1 font-medium"><strong className="text-slate-400">Location:</strong> Islamabad, Pakistan</span>
@@ -46,17 +46,18 @@ export default function Home() {
             <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
             <div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold tracking-wider uppercase mb-4 bg-amber-950/60 border border-amber-900/40 text-amber-400">
-                🚀 Strategic Partner
+                🚀 PM Accelerator
               </div>
               <h3 className="font-extrabold text-white text-xl tracking-tight mb-2">Product Manager Accelerator</h3>
               <p className="text-slate-400 text-xs md:text-sm leading-relaxed mb-6 font-medium">
-                Designed to support PM professionals through every stage of their careers — from entry-level to Directors — developing core PM, AI, and leadership capabilities.
+                Designed to support PM professionals through every stage of their careers — from entry-level to Directors — developing PM, AI and leadership skills.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-3 text-[11px] text-slate-500 border-t border-slate-800/60 pt-4">
               <div><strong className="text-slate-400 block mb-0.5">Location</strong> Boston, MA</div>
               <div><strong className="text-slate-400 block mb-0.5">Established</strong> 2020</div>
-              <div className="col-span-2 mt-1">
+              <div><strong className="text-slate-400 block mb-0.5">Phone</strong> +1 (954) 889-1063</div>
+              <div className="mt-1 flex items-end">
                 <a href="https://www.pmaccelerator.io/" target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1">
                   🌐 Visit Website
                 </a>
