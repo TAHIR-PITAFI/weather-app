@@ -350,7 +350,7 @@ export default function WeatherApp() {
               style={{ border: '1px solid rgba(99,102,241,0.15)' }}>
               <div className="absolute inset-0 bg-indigo-950/20 pointer-events-none z-10" />
               <iframe width="100%" height="100%"
-                style={{ border: 0, position: 'absolute', inset: 0, filter: 'invert(92%) hue-rotate(185deg) saturate(0.8) contrast(1.1)' }}
+                style={{ border: 0, position: 'absolute', inset: 0 }}
                 loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"
                 src={`https://maps.google.com/maps?q=${weatherData.latitude},${weatherData.longitude}&z=11&output=embed`}
               />

@@ -3,7 +3,7 @@ import WeatherApp from '@frontend/components/WeatherApp';
 export default function Home() {
   return (
     <main className="min-h-screen relative overflow-clip font-sans"
-      style={{ background: '#080810' }}>
+      style={{ background: '#080810', transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}>
 
       {/* Multi-color ambient glows */}
       <div className="absolute top-0 left-0 w-[300px] md:w-[600px] h-[250px] md:h-[400px] rounded-full pointer-events-none"
