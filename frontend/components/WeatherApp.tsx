@@ -339,8 +339,7 @@ export default function WeatherApp() {
                 ))}
               </div>
             </div>
-            <div className="lg:col-span-2 rounded-2xl md:rounded-[2rem] overflow-hidden relative h-[200px] md:min-h-[260px]"
-              style={{ border: '1px solid rgba(99,102,241,0.15)' }}>
+            <div className="hidden sm:block lg:col-span-2 rounded-2xl md:rounded-[2rem] overflow-hidden relative h-[200px] md:min-h-[260px] border border-slate-800">
               <div className="absolute inset-0 bg-indigo-950/20 pointer-events-none z-10" />
               <iframe width="100%" height="100%"
                 style={{ border: 0, position: 'absolute', inset: 0 }}
