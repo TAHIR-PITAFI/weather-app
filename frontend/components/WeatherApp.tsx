@@ -13,12 +13,27 @@ export default function WeatherApp() {
   const [loading, setLoading] = useState(false);
   const [editRecord, setEditRecord] = useState<any>(null);
   const [editNotes, setEditNotes] = useState("");
+  const [visitorId, setVisitorId] = useState<string>("");
 
-  useEffect(() => { fetchHistory(); }, []);
+  useEffect(() => {
+    let vid = localStorage.getItem("weather_visitor_id");
+    if (!vid) {
+      vid = "usr_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+      localStorage.setItem("weather_visitor_id", vid);
+    }
+    setVisitorId(vid);
+  }, []);
 
-  const fetchHistory = async () => {
+  useEffect(() => {
+    if (visitorId) {
+      fetchHistory(visitorId);
+    }
+  }, [visitorId]);
+
+  const fetchHistory = async (vid = visitorId) => {
+    if (!vid) return;
     try {
-      const res = await fetch('/api/weather');
+      const res = await fetch(`/api/weather?visitorId=${vid}`);
       const data = await res.json();
       if (Array.isArray(data)) setHistory(data);
       else throw new Error(data.error || "Failed to load history");
@@ -96,14 +111,14 @@ export default function WeatherApp() {
       const res = await fetch('/api/weather', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ location, resolvedName: geo.name, lat: geo.lat, lon: geo.lon, weatherPayload, startDate: startDate || null, endDate: endDate || null })
+        body: JSON.stringify({ location, resolvedName: geo.name, lat: geo.lat, lon: geo.lon, weatherPayload, startDate: startDate || null, endDate: endDate || null, visitorId })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to save weather data");
       setWeatherData(data);
       setLocation(""); setStartDate(""); setEndDate("");
       toast.success(`✓ Weather found for ${data.resolvedLocationName}`);
-      fetchHistory();
+      fetchHistory(visitorId);
     } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
   };
 
@@ -120,12 +135,12 @@ export default function WeatherApp() {
         const weatherPayload = await weatherRes.json();
         const res = await fetch('/api/weather', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ location: "Current GPS Location", resolvedName: "Current GPS Location", lat: latitude, lon: longitude, weatherPayload })
+          body: JSON.stringify({ location: "Current GPS Location", resolvedName: "Current GPS Location", lat: latitude, lon: longitude, weatherPayload, visitorId })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to save");
         setWeatherData(data); setLocation("");
-        toast.success("✓ Weather found for your current location"); fetchHistory();
+        toast.success("✓ Weather found for your current location"); fetchHistory(visitorId);
       } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
     }, () => { toast.error("Unable to retrieve location. Check browser permissions."); setLoading(false); });
   };
@@ -280,7 +295,7 @@ export default function WeatherApp() {
         <div className="space-y-4 md:space-y-6 w-full max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
             {/* Hero Card */}
-            <div className="lg:col-span-3 relative rounded-2xl md:rounded-[2rem] overflow-hidden p-6 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[280px] bg-slate-900 border border-slate-800">
+            <div className="lg:col-span-3 relative rounded-2xl md:rounded-[2rem] overflow-hidden p-6 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[280px] bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/40 border border-slate-800 shadow-xl shadow-indigo-950/10">
               <div className="relative z-10 flex justify-between items-start">
                 <div className="flex-1 min-w-0 pr-4">
                   <p className="text-sky-400/70 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-1 md:mb-2 truncate">Current Conditions</p>
@@ -299,22 +314,22 @@ export default function WeatherApp() {
 
             {/* Metrics */}
             <div className="lg:col-span-2 grid grid-cols-2 gap-3 md:gap-5">
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#1a1208] border border-amber-900/30">
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-gradient-to-br from-[#1a1208] to-[#271a06]/40 border border-amber-900/30 hover:border-amber-500/30 transition-all duration-300">
                 <Thermometer className="w-5 h-5 text-amber-400" />
                 <div className="mt-3"><p className="text-amber-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Feels Like</p>
                   <p className="text-2xl md:text-3xl font-semibold text-amber-100">{parsedWeather.current?.apparent_temperature ?? "–"}°</p></div>
               </div>
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#061712] border border-emerald-900/30">
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-gradient-to-br from-[#061712] to-[#0b2018]/40 border border-emerald-900/30 hover:border-emerald-500/30 transition-all duration-300">
                 <Droplets className="w-5 h-5 text-emerald-400" />
                 <div className="mt-3"><p className="text-emerald-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Humidity</p>
                   <p className="text-2xl md:text-3xl font-semibold text-emerald-100">{parsedWeather.current?.relative_humidity_2m ?? "–"}%</p></div>
               </div>
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#130b1f] border border-violet-900/30">
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-gradient-to-br from-[#130b1f] to-[#1a0d2e]/40 border border-violet-900/30 hover:border-violet-500/30 transition-all duration-300">
                 <Wind className="w-5 h-5 text-violet-400" />
                 <div className="mt-3"><p className="text-violet-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Wind Speed</p>
                   <p className="text-2xl md:text-3xl font-semibold text-violet-100">{parsedWeather.current?.wind_speed_10m ?? "–"}<span className="text-sm font-normal text-violet-400/60 ml-1">km/h</span></p></div>
               </div>
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#1c0a0e] border border-rose-900/30">
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-gradient-to-br from-[#1c0a0e] to-[#260810]/40 border border-rose-900/30 hover:border-rose-500/30 transition-all duration-300">
                 <Gauge className="w-5 h-5 text-rose-400" />
                 <div className="mt-3"><p className="text-rose-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Pressure</p>
                   <p className="text-2xl md:text-3xl font-semibold text-rose-100">{parsedWeather.current?.surface_pressure ?? "–"}<span className="text-sm font-normal text-rose-400/60 ml-1">hPa</span></p></div>
@@ -324,7 +339,7 @@ export default function WeatherApp() {
 
           {/* Row 2: Forecast + Map */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
-            <div className="lg:col-span-3 rounded-2xl md:rounded-[2rem] p-5 md:p-10 bg-slate-900/60 border border-slate-800">
+            <div className="lg:col-span-3 rounded-2xl md:rounded-[2rem] p-5 md:p-10 bg-gradient-to-br from-slate-900/90 to-slate-900/40 border border-slate-800 shadow-xl">
               <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-amber-400/70 mb-5 md:mb-8 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-amber-500" /> 5-Day Forecast
               </p>

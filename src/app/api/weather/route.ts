@@ -3,9 +3,19 @@ import { prisma } from '@database/client';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const requests = await prisma.weatherRequest.findMany({ orderBy: { createdAt: 'desc' } });
+    const { searchParams } = new URL(request.url);
+    const visitorId = searchParams.get('visitorId');
+    
+    if (!visitorId) {
+      return NextResponse.json([]);
+    }
+
+    const requests = await prisma.weatherRequest.findMany({ 
+      where: { visitorId },
+      orderBy: { createdAt: 'desc' } 
+    });
     return NextResponse.json(requests);
   } catch (error) {
     console.error("GET API Error:", error);
@@ -16,7 +26,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { location, resolvedName, lat, lon, weatherPayload, startDate, endDate } = body;
+    const { location, resolvedName, lat, lon, weatherPayload, startDate, endDate, visitorId } = body;
 
     if (lat === undefined || lon === undefined || !weatherPayload) {
       return NextResponse.json({ error: 'Missing required fields: lat, lon, weatherPayload' }, { status: 400 });
@@ -42,6 +52,7 @@ export async function POST(request: Request) {
         temperatureData: JSON.stringify(weatherPayload),
         startDate: startDate ? new Date(startDate) : null,
         endDate: endDate ? new Date(endDate) : null,
+        visitorId: visitorId || null,
       }
     });
 

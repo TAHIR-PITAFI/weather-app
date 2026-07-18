@@ -20,5 +20,6 @@ model WeatherRequest {
   endDate              DateTime?
   temperatureData      String?   // Storing JSON response as a string
   notes                String?   // To allow user updates
+  visitorId            String?   // To segment history per user/session
   createdAt            DateTime  @default(now())
 }
