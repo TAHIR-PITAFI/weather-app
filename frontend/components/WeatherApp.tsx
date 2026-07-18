@@ -203,7 +203,7 @@ export default function WeatherApp() {
 
       {/* ── Edit Modal ── */}
       {editRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
           <div className="w-full max-w-md rounded-2xl p-6 space-y-4" style={{ background: '#0D0D0D', border: '1px solid #1E293B' }}>
             <h3 className="text-white font-bold text-xl">Edit Record</h3>
             <div className="space-y-1">
