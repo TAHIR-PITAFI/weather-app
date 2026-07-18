@@ -401,10 +401,16 @@ export default function WeatherApp() {
                   <p className="text-slate-500 text-xs mt-0.5">{new Date(record.createdAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</p>
                   {record.startDate && <p className="text-amber-400/60 text-xs mt-0.5">📅 {record.startDate?.split('T')[0]} → {record.endDate?.split('T')[0]}</p>}
                 </div>
-                <button onClick={() => handleDelete(record.id)}
-                  className="ml-auto sm:hidden w-9 h-9 rounded-xl flex items-center justify-center bg-rose-950/40 border border-rose-900/40 text-rose-400 hover:bg-rose-600 hover:text-white transition-all shrink-0">
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                <div className="ml-auto sm:hidden flex items-center gap-2 shrink-0">
+                  <button onClick={() => openEdit(record)}
+                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-950/40 border border-indigo-900/40 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all">
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button onClick={() => handleDelete(record.id)}
+                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-rose-950/40 border border-rose-900/40 text-rose-400 hover:bg-rose-600 hover:text-white transition-all">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               <div className="sm:flex-1 sm:max-w-[220px] px-4 py-3 rounded-xl relative"
