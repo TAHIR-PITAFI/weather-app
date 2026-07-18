@@ -280,8 +280,7 @@ export default function WeatherApp() {
         <div className="space-y-4 md:space-y-6 w-full max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
             {/* Hero Card */}
-            <div className="lg:col-span-3 relative rounded-2xl md:rounded-[2rem] overflow-hidden p-6 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[280px]"
-              style={{ background: 'linear-gradient(135deg, #0F172A 0%, #0C1A2E 60%, #0A2540 100%)', border: '1px solid rgba(56,189,248,0.12)' }}>
+            <div className="lg:col-span-3 relative rounded-2xl md:rounded-[2rem] overflow-hidden p-6 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[280px] bg-slate-900 border border-slate-800">
               <div className="relative z-10 flex justify-between items-start">
                 <div className="flex-1 min-w-0 pr-4">
                   <p className="text-sky-400/70 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-1 md:mb-2 truncate">Current Conditions</p>
@@ -300,26 +299,22 @@ export default function WeatherApp() {
 
             {/* Metrics */}
             <div className="lg:col-span-2 grid grid-cols-2 gap-3 md:gap-5">
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px]"
-                style={{ background: 'linear-gradient(145deg, #1C1208 0%, #271A06 100%)', border: '1px solid rgba(245,158,11,0.2)' }}>
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#1a1208] border border-amber-900/30">
                 <Thermometer className="w-5 h-5 text-amber-400" />
                 <div className="mt-3"><p className="text-amber-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Feels Like</p>
                   <p className="text-2xl md:text-3xl font-semibold text-amber-100">{parsedWeather.current?.apparent_temperature ?? "–"}°</p></div>
               </div>
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px]"
-                style={{ background: 'linear-gradient(145deg, #061712 0%, #0B2018 100%)', border: '1px solid rgba(52,211,153,0.2)' }}>
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#061712] border border-emerald-900/30">
                 <Droplets className="w-5 h-5 text-emerald-400" />
                 <div className="mt-3"><p className="text-emerald-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Humidity</p>
                   <p className="text-2xl md:text-3xl font-semibold text-emerald-100">{parsedWeather.current?.relative_humidity_2m ?? "–"}%</p></div>
               </div>
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px]"
-                style={{ background: 'linear-gradient(145deg, #130B1F 0%, #1A0D2E 100%)', border: '1px solid rgba(167,139,250,0.2)' }}>
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#130b1f] border border-violet-900/30">
                 <Wind className="w-5 h-5 text-violet-400" />
                 <div className="mt-3"><p className="text-violet-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Wind Speed</p>
                   <p className="text-2xl md:text-3xl font-semibold text-violet-100">{parsedWeather.current?.wind_speed_10m ?? "–"}<span className="text-sm font-normal text-violet-400/60 ml-1">km/h</span></p></div>
               </div>
-              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px]"
-                style={{ background: 'linear-gradient(145deg, #1C0A0E 0%, #260810 100%)', border: '1px solid rgba(251,113,133,0.2)' }}>
+              <div className="rounded-2xl md:rounded-[1.75rem] p-4 md:p-7 flex flex-col justify-between min-h-[110px] bg-[#1c0a0e] border border-rose-900/30">
                 <Gauge className="w-5 h-5 text-rose-400" />
                 <div className="mt-3"><p className="text-rose-400/60 text-[9px] font-bold tracking-widest uppercase mb-1">Pressure</p>
                   <p className="text-2xl md:text-3xl font-semibold text-rose-100">{parsedWeather.current?.surface_pressure ?? "–"}<span className="text-sm font-normal text-rose-400/60 ml-1">hPa</span></p></div>
@@ -329,8 +324,7 @@ export default function WeatherApp() {
 
           {/* Row 2: Forecast + Map */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
-            <div className="lg:col-span-3 rounded-2xl md:rounded-[2rem] p-5 md:p-10"
-              style={{ background: 'linear-gradient(135deg, #0D1117 0%, #161B22 100%)', border: '1px solid rgba(255,215,0,0.08)' }}>
+            <div className="lg:col-span-3 rounded-2xl md:rounded-[2rem] p-5 md:p-10 bg-slate-900/60 border border-slate-800">
               <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-amber-400/70 mb-5 md:mb-8 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-amber-500" /> 5-Day Forecast
               </p>
@@ -389,8 +383,7 @@ export default function WeatherApp() {
               className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 md:p-5 rounded-2xl"
               style={{ background: '#0D0D0D', border: '1px solid #1A1A2E' }}>
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #1E1B4B, #312E81)', color: '#A5B4FC' }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 bg-indigo-950 border border-indigo-800 text-indigo-300">
                   {String(idx + 1).padStart(2, '0')}
                 </div>
                 <div className="min-w-0">

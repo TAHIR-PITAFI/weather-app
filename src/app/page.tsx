@@ -25,14 +25,12 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pb-12 md:pb-16">
-          <div className="p-6 md:p-10 rounded-2xl md:rounded-[2rem]"
-            style={{ background: 'linear-gradient(135deg, #0D0D1F 0%, #12122E 100%)', border: '1px solid rgba(99,102,241,0.2)' }}>
+          <div className="p-6 md:p-10 rounded-2xl md:rounded-[2rem] bg-slate-900/60 border border-slate-800">
             <p className="text-indigo-400/60 text-[10px] font-bold tracking-[0.25em] uppercase mb-2 md:mb-3">Developed By</p>
             <p className="font-bold text-indigo-300 text-lg md:text-xl mb-1">Tahir Hussain</p>
             <p className="text-sm leading-relaxed text-slate-400 font-medium">BSAI Student · Islamabad, Pakistan</p>
           </div>
-          <div className="p-6 md:p-10 rounded-2xl md:rounded-[2rem]"
-            style={{ background: 'linear-gradient(135deg, #1A1200 0%, #221800 100%)', border: '1px solid rgba(245,158,11,0.2)' }}>
+          <div className="p-6 md:p-10 rounded-2xl md:rounded-[2rem] bg-slate-900/60 border border-slate-800">
             <p className="text-amber-400/60 text-[10px] font-bold tracking-[0.25em] uppercase mb-2 md:mb-3">PM Accelerator</p>
             <p className="font-bold text-amber-300 text-base md:text-lg mb-2 md:mb-3">Product Manager Accelerator</p>
             <p className="text-slate-400 text-xs md:text-sm leading-relaxed mb-3 md:mb-4 font-medium">
