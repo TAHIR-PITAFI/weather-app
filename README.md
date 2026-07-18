@@ -1,24 +1,26 @@
 # AeroWeather - Full-Stack Weather Application
 
-A premium, full-stack weather tracking application built with Next.js, Prisma, SQLite, and Tailwind CSS. 
+A premium, full-stack weather tracking application built with Next.js, Prisma, Neon (PostgreSQL), and Tailwind CSS. 
 This project fulfills all frontend and backend requirements for the PM Accelerator assignment.
 
 ## Features
 - **Hyper-local Weather Tracking**: Search by City, Zip Code, Landmark, or use the "My Location" GPS button.
-- **Advanced Weather Metrics**: Real-time Temperature, "Feels Like", Humidity, Wind Speed, and Surface Pressure (via Open-Meteo API).
+- **Date Range Support**: Fetch historical weather data by providing a start and end date (supports dates all the way back to 1940 via Open-Meteo Archive API).
+- **Advanced Weather Metrics**: Real-time Temperature, "Feels Like", Humidity, Wind Speed, and Surface Pressure.
 - **5-Day Forecast**: Animated grid displaying daily high/low temperatures.
-- **Database Persistence**: Full CRUD functionality via Prisma ORM & SQLite.
-  - Create: Automated logging of all weather searches.
+- **Cloud Database Persistence**: Full CRUD functionality via Prisma ORM & Neon (PostgreSQL).
+  - Create: Automated logging of all weather searches including date ranges.
   - Read: Interactive SaaS-style history dashboard.
-  - Update: Add custom notes to historical records.
+  - Update: Add custom notes and update records.
   - Delete: Remove historical records.
-- **Data Export**: Export search history to CSV or JSON formats.
-- **Premium Glassmorphism UI**: Dynamic ambient backgrounds, blur effects, and micro-animations.
+- **Data Export**: Export search history to JSON, CSV, XML, or Markdown formats.
+- **Google Maps Integration**: Automatically embeds a Google Map for the searched location.
+- **Premium Glassmorphism UI**: Dynamic ambient backgrounds, blur effects, and responsive mobile-first design.
 
 ## Technology Stack
 - **Frontend**: Next.js (App Router), React, Tailwind CSS, Lucide React (Icons).
 - **Backend**: Next.js API Routes.
-- **Database**: Prisma ORM, local SQLite Database (`dev.db`).
+- **Database**: Prisma ORM, Neon Cloud PostgreSQL.
 
 ## Project Structure
 The project was explicitly structured to maintain strict separation of concerns:
@@ -36,6 +38,7 @@ The project was explicitly structured to maintain strict separation of concerns:
 
 2. Generate the Prisma Client and Sync Database:
    ```bash
+   npx prisma generate
    npx prisma db push
    ```
 
