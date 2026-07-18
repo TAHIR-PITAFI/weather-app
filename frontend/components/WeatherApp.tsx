@@ -234,7 +234,7 @@ export default function WeatherApp() {
       <section className="w-full max-w-2xl mx-auto space-y-3">
         <form onSubmit={handleSearch} className="space-y-3">
           {/* Location input */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0 bg-[#0D0D0D] border border-[#1E293B] hover:border-indigo-500/40 focus-within:border-indigo-500/60 rounded-2xl overflow-hidden p-2 transition-all shadow-[0_0_40px_-10px_rgba(99,102,241,0.15)]">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0 bg-[#0D0D0D] border border-[#1E293B] rounded-2xl overflow-hidden p-2">
             <div className="flex items-center flex-1 min-w-0">
               <div className="pl-3 text-indigo-400 shrink-0"><MapPin className="w-5 h-5" /></div>
               <input
@@ -386,10 +386,8 @@ export default function WeatherApp() {
         <div className="space-y-3">
           {history.map((record, idx) => (
             <div key={record.id}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 md:p-5 rounded-2xl group transition-all"
-              style={{ background: '#0D0D0D', border: '1px solid #1A1A2E' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = '#2D2D4E')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = '#1A1A2E')}>
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 md:p-5 rounded-2xl"
+              style={{ background: '#0D0D0D', border: '1px solid #1A1A2E' }}>
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0"
                   style={{ background: 'linear-gradient(135deg, #1E1B4B, #312E81)', color: '#A5B4FC' }}>
@@ -402,11 +400,11 @@ export default function WeatherApp() {
                 </div>
                 <div className="ml-auto sm:hidden flex items-center gap-2 shrink-0">
                   <button onClick={() => openEdit(record)}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-950/40 border border-indigo-900/40 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all">
+                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-950/40 border border-indigo-900/40 text-indigo-400">
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button onClick={() => handleDelete(record.id)}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-rose-950/40 border border-rose-900/40 text-rose-400 hover:bg-rose-600 hover:text-white transition-all">
+                    className="w-9 h-9 rounded-xl flex items-center justify-center bg-rose-950/40 border border-rose-900/40 text-rose-400">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -420,11 +418,11 @@ export default function WeatherApp() {
 
               <div className="hidden sm:flex items-center gap-2">
                 <button onClick={() => openEdit(record)}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-950/40 border border-indigo-900/40 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all">
+                  className="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-950/40 border border-indigo-900/40 text-indigo-400">
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button onClick={() => handleDelete(record.id)}
-                  className="w-9 h-9 rounded-xl flex items-center justify-center bg-rose-950/40 border border-rose-900/40 text-rose-400 hover:bg-rose-600 hover:text-white transition-all">
+                  className="w-9 h-9 rounded-xl flex items-center justify-center bg-rose-950/40 border border-rose-900/40 text-rose-400">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
