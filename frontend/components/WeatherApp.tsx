@@ -277,12 +277,11 @@ export default function WeatherApp() {
 
       {/* ── Weather Dashboard ── */}
       {parsedWeather && (
-        <div className="animate-in fade-in slide-in-from-bottom-6 duration-700 space-y-4 md:space-y-6 w-full max-w-5xl mx-auto">
+        <div className="space-y-4 md:space-y-6 w-full max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
             {/* Hero Card */}
             <div className="lg:col-span-3 relative rounded-2xl md:rounded-[2rem] overflow-hidden p-6 md:p-10 flex flex-col justify-between min-h-[200px] md:min-h-[280px]"
               style={{ background: 'linear-gradient(135deg, #0F172A 0%, #0C1A2E 60%, #0A2540 100%)', border: '1px solid rgba(56,189,248,0.12)' }}>
-              <div className="absolute top-0 right-0 w-40 md:w-56 h-40 md:h-56 bg-sky-500/10 rounded-full blur-[80px] pointer-events-none" />
               <div className="relative z-10 flex justify-between items-start">
                 <div className="flex-1 min-w-0 pr-4">
                   <p className="text-sky-400/70 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-1 md:mb-2 truncate">Current Conditions</p>
