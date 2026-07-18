@@ -14,6 +14,9 @@ export default function WeatherApp() {
   const [editRecord, setEditRecord] = useState<any>(null);
   const [editNotes, setEditNotes] = useState("");
   const [visitorId, setVisitorId] = useState<string>("");
+  const [historySearch, setHistorySearch] = useState("");
+  const [compareList, setCompareList] = useState<any[]>([]);
+  const [isComparing, setIsComparing] = useState(false);
 
   useEffect(() => {
     let vid = localStorage.getItem("weather_visitor_id");
@@ -29,6 +32,57 @@ export default function WeatherApp() {
       fetchHistory(visitorId);
     }
   }, [visitorId]);
+
+  // Compute live search stats
+  const totalSearches = history.length;
+  const getStats = () => {
+    if (history.length === 0) return { avgTemp: "–", favCity: "–" };
+    let sumTemp = 0, validCount = 0;
+    const cityCounts: { [key: string]: number } = {};
+
+    history.forEach(r => {
+      const name = r.resolvedLocationName || r.locationQuery;
+      cityCounts[name] = (cityCounts[name] || 0) + 1;
+      try {
+        const payload = JSON.parse(r.temperatureData);
+        const temp = payload.current?.temperature_2m ?? payload.daily?.temperature_2m_max?.[0];
+        if (temp !== undefined && temp !== null) {
+          sumTemp += temp;
+          validCount++;
+        }
+      } catch {}
+    });
+    const avgTemp = validCount > 0 ? (sumTemp / validCount).toFixed(1) + "°C" : "–";
+    let favCity = "–", maxCount = 0;
+    Object.entries(cityCounts).forEach(([city, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        favCity = city.split(',')[0];
+      }
+    });
+    return { avgTemp, favCity };
+  };
+  const { avgTemp, favCity } = getStats();
+
+  const filteredHistory = history.filter(r => {
+    const q = historySearch.toLowerCase().trim();
+    if (!q) return true;
+    return (r.resolvedLocationName || "").toLowerCase().includes(q) || 
+           (r.locationQuery || "").toLowerCase().includes(q) || 
+           (r.notes || "").toLowerCase().includes(q);
+  });
+
+  const handleToggleCompare = (record: any) => {
+    if (compareList.some(r => r.id === record.id)) {
+      setCompareList(compareList.filter(r => r.id !== record.id));
+    } else {
+      if (compareList.length >= 2) {
+        toast.error("You can only compare up to 2 cities!");
+        return;
+      }
+      setCompareList([...compareList, record]);
+    }
+  };
 
   const fetchHistory = async (vid = visitorId) => {
     if (!vid) return;
@@ -216,6 +270,53 @@ export default function WeatherApp() {
         style: { background: '#0D0D0D', color: '#F1F5F9', border: '1px solid #1E293B', borderRadius: '16px', padding: '14px 20px', fontWeight: 500, fontSize: '14px' }
       }} />
 
+      {/* ── Compare Modal ── */}
+      {isComparing && compareList.length === 2 && (() => {
+        const p1 = JSON.parse(compareList[0].temperatureData);
+        const p2 = JSON.parse(compareList[1].temperatureData);
+        const t1 = p1.current?.temperature_2m ?? p1.daily?.temperature_2m_max?.[0] ?? "–";
+        const t2 = p2.current?.temperature_2m ?? p2.daily?.temperature_2m_max?.[0] ?? "–";
+        const fl1 = p1.current?.apparent_temperature ?? "–";
+        const fl2 = p2.current?.apparent_temperature ?? "–";
+        const h1 = p1.current?.relative_humidity_2m ?? "–";
+        const h2 = p2.current?.relative_humidity_2m ?? "–";
+        const w1 = p1.current?.wind_speed_10m ?? "–";
+        const w2 = p2.current?.wind_speed_10m ?? "–";
+        const code1 = p1.current?.weather_code ?? p1.daily?.weather_code?.[0] ?? 0;
+        const code2 = p2.current?.weather_code ?? p2.daily?.weather_code?.[0] ?? 0;
+        
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div className="w-full max-w-2xl bg-[#0D0D0D] border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-4">
+                <h3 className="text-white font-extrabold text-xl flex items-center gap-2">📊 Climate Comparison</h3>
+                <button onClick={() => { setIsComparing(false); setCompareList([]); }} className="text-slate-400 hover:text-white font-bold text-sm bg-slate-800 px-3 py-1.5 rounded-lg">Close</button>
+              </div>
+              <div className="grid grid-cols-2 gap-4 md:gap-8">
+                {/* City 1 */}
+                <div className="space-y-4 text-center p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl">
+                  <h4 className="text-indigo-400 font-bold text-lg truncate">{compareList[0].resolvedLocationName.split(',')[0]}</h4>
+                  <div className="flex justify-center">{getWeatherIcon(code1, "w-12 h-12")}</div>
+                  <div className="text-4xl md:text-5xl font-black text-white">{t1}°C</div>
+                  <div className="text-xs text-slate-500 pt-2 border-t border-slate-800/60">Feels Like: <span className="text-slate-300 font-semibold">{fl1}°C</span></div>
+                  <div className="text-xs text-slate-500">Humidity: <span className="text-slate-300 font-semibold">{h1}%</span></div>
+                  <div className="text-xs text-slate-500">Wind: <span className="text-slate-300 font-semibold">{w1} km/h</span></div>
+                </div>
+                {/* City 2 */}
+                <div className="space-y-4 text-center p-6 bg-slate-900/40 border border-slate-800/80 rounded-2xl">
+                  <h4 className="text-amber-400 font-bold text-lg truncate">{compareList[1].resolvedLocationName.split(',')[0]}</h4>
+                  <div className="flex justify-center">{getWeatherIcon(code2, "w-12 h-12")}</div>
+                  <div className="text-4xl md:text-5xl font-black text-white">{t2}°C</div>
+                  <div className="text-xs text-slate-500 pt-2 border-t border-slate-800/60">Feels Like: <span className="text-slate-300 font-semibold">{fl2}°C</span></div>
+                  <div className="text-xs text-slate-500">Humidity: <span className="text-slate-300 font-semibold">{h2}%</span></div>
+                  <div className="text-xs text-slate-500">Wind: <span className="text-slate-300 font-semibold">{w2} km/h</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── Edit Modal ── */}
       {editRecord && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
@@ -366,8 +467,8 @@ export default function WeatherApp() {
       )}
 
       {/* ── History Section ── */}
-      <section className="w-full max-w-5xl mx-auto pt-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 md:mb-8 gap-4">
+      <section className="w-full max-w-5xl mx-auto pt-4 space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
           <div>
             <p className="text-indigo-400/70 text-[10px] font-bold tracking-[0.25em] uppercase mb-1">Database · CRUD</p>
             <h3 className="text-2xl md:text-3xl font-bold text-white">Search History</h3>
@@ -390,15 +491,64 @@ export default function WeatherApp() {
           </div>
         </div>
 
+        {/* ── Stats Widget ── */}
+        {totalSearches > 0 && (
+          <div className="grid grid-cols-3 gap-3 w-full p-4 rounded-2xl bg-slate-900/40 border border-slate-800/80">
+            <div className="text-center">
+              <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500">Total Queries</p>
+              <p className="text-base md:text-2xl font-extrabold text-indigo-400 mt-1">{totalSearches}</p>
+            </div>
+            <div className="text-center border-x border-slate-800/60">
+              <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500">Avg Temp</p>
+              <p className="text-base md:text-2xl font-extrabold text-amber-400 mt-1">{avgTemp}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500">Fav City</p>
+              <p className="text-base md:text-2xl font-extrabold text-emerald-400 mt-1 truncate px-1">{favCity}</p>
+            </div>
+          </div>
+        )}
+
+        {/* ── Interactive Live Filters ── */}
+        {totalSearches > 0 && (
+          <div className="flex flex-col md:flex-row gap-3 w-full bg-[#0B0D13]/60 p-3 rounded-2xl border border-slate-800">
+            <input 
+              type="text" 
+              placeholder="🔍 Search history by city name or notes..."
+              value={historySearch}
+              onChange={e => setHistorySearch(e.target.value)}
+              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-slate-300 text-sm focus:outline-none focus:border-indigo-500/50"
+            />
+            {compareList.length > 0 && (
+              <button 
+                onClick={() => setIsComparing(true)}
+                disabled={compareList.length !== 2}
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white text-xs font-bold transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+              >
+                📊 Compare ({compareList.length}/2)
+              </button>
+            )}
+          </div>
+        )}
+
         <div className="space-y-3">
-          {history.map((record, idx) => (
+          {filteredHistory.map((record, idx) => (
             <div key={record.id}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 md:p-5 rounded-2xl"
-              style={{ background: '#0D0D0D', border: '1px solid #1A1A2E' }}>
+              className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 md:p-5 rounded-2xl border transition-all ${
+                compareList.some(r => r.id === record.id) ? 'border-indigo-500 bg-indigo-950/10' : 'border-[#1A1A2E] bg-[#0D0D0D]'
+              }`}>
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 bg-indigo-950 border border-indigo-800 text-indigo-300">
-                  {String(idx + 1).padStart(2, '0')}
-                </div>
+                <button 
+                  onClick={() => handleToggleCompare(record)}
+                  className={`w-9 h-9 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold shrink-0 border transition-all ${
+                    compareList.some(r => r.id === record.id) 
+                      ? 'bg-indigo-600 border-indigo-500 text-white' 
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
+                  }`}
+                  title="Click to compare side-by-side"
+                >
+                  {compareList.some(r => r.id === record.id) ? "✓" : "VS"}
+                </button>
                 <div className="min-w-0">
                   <p className="text-white font-semibold text-sm truncate">{record.resolvedLocationName}</p>
                   <p className="text-slate-500 text-xs mt-0.5">{new Date(record.createdAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</p>
@@ -434,10 +584,10 @@ export default function WeatherApp() {
               </div>
             </div>
           ))}
-          {history.length === 0 && (
+          {filteredHistory.length === 0 && (
             <div className="py-16 flex flex-col items-center justify-center rounded-[2rem] border border-dashed border-slate-800" style={{ background: '#0A0A0A' }}>
               <MapPin className="w-10 h-10 text-slate-700 mb-3" />
-              <p className="text-slate-500 font-medium text-center px-4">No history yet. Search for a city above to get started!</p>
+              <p className="text-slate-500 font-medium text-center px-4">No history records match your search.</p>
             </div>
           )}
         </div>
