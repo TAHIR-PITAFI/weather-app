@@ -2,7 +2,7 @@ import WeatherApp from '@frontend/components/WeatherApp';
 
 export default function Home() {
   return (
-    <main className="min-h-screen font-sans" style={{ background: '#080810' }}>
+    <main className="min-h-screen font-sans">
       <div className="px-4 md:px-8 lg:px-10 max-w-7xl mx-auto flex flex-col min-h-screen">
 
         {/* Header */}
