@@ -336,7 +336,7 @@ export default function WeatherApp() {
                 <Calendar className="w-4 h-4 text-amber-500" /> 5-Day Forecast
               </p>
               <div className="flex gap-2 md:gap-3 overflow-x-auto pb-1 md:pb-0 md:justify-between">
-                {parsedWeather.daily?.time?.slice(0, 6).map((time: string, i: number) => (
+                {parsedWeather.daily?.time?.slice(0, 5).map((time: string, i: number) => (
                   <div key={time} className="flex flex-col items-center flex-shrink-0 md:flex-1 gap-2 min-w-[56px]">
                     <p className="text-slate-400 text-xs font-semibold whitespace-nowrap">{new Date(time).toLocaleDateString('en-US', { weekday: 'short', month:'short', day:'numeric' })}</p>
                     {getWeatherIcon(parsedWeather.daily.weather_code[i], "w-7 h-7 md:w-9 md:h-9")}
