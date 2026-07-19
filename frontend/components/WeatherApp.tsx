@@ -198,6 +198,66 @@ export default function WeatherApp() {
     a.href = "data:text/markdown;charset=utf-8," + encodeURIComponent(md);
     a.download = "weather_history.md"; document.body.appendChild(a); a.click(); a.remove();
   };
+  const exportPDF = () => {
+    if (!history.length) { toast.error("No data to export"); return; }
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      toast.error("Popup blocked! Please allow popups to export PDF.");
+      return;
+    }
+    const htmlContent = `
+      <html>
+        <head>
+          <title>Weather Search History Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 30px; color: #111; }
+            h1 { text-align: center; color: #1e1b4b; margin-bottom: 5px; }
+            .date { text-align: center; font-size: 12px; color: #666; margin-bottom: 30px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 13px; }
+            th { background-color: #f8fafc; color: #334155; font-weight: bold; }
+            tr:nth-child(even) { background-color: #f8fafc; }
+          </style>
+        </head>
+        <body>
+          <h1>AeroWeather Search History</h1>
+          <div class="date">Generated on: ${new Date().toLocaleString()}</div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Location</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Date Range</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${history.map((r, i) => `
+                <tr>
+                  <td>${String(i + 1).padStart(2, '0')}</td>
+                  <td>${r.resolvedLocationName}</td>
+                  <td>${r.latitude}</td>
+                  <td>${r.longitude}</td>
+                  <td>${r.startDate ? `${r.startDate.split('T')[0]} to ${r.endDate.split('T')[0]}` : 'N/A'}</td>
+                  <td>${r.notes || '-'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+  };
 
   const getWeatherIcon = (code: number, cls = "w-10 h-10") => {
     if (code <= 3) return <Sun className={`${cls} text-amber-400`} />;
@@ -375,8 +435,8 @@ export default function WeatherApp() {
             <h3 className="text-2xl md:text-3xl font-bold text-white">Search History</h3>
             <p className="text-slate-500 text-xs md:text-sm mt-1">Create, Read, Update & Delete your weather records.</p>
           </div>
-          {/* Export buttons — all 4 formats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full sm:w-auto">
+          {/* Export buttons — all 5 formats */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full sm:w-auto">
             <button onClick={exportJSON} className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-emerald-900/40 bg-emerald-950/20 text-emerald-300 text-xs font-bold hover:bg-emerald-900/30 transition-colors min-h-[40px]">
               <FileJson className="w-3.5 h-3.5" /> JSON
             </button>
@@ -385,6 +445,9 @@ export default function WeatherApp() {
             </button>
             <button onClick={exportXML} className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-sky-900/40 bg-sky-950/20 text-sky-300 text-xs font-bold hover:bg-sky-900/30 transition-colors min-h-[40px]">
               <FileText className="w-3.5 h-3.5" /> XML
+            </button>
+            <button onClick={exportPDF} className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-rose-900/40 bg-rose-950/20 text-rose-300 text-xs font-bold hover:bg-rose-900/30 transition-colors min-h-[40px]">
+              <FileText className="w-3.5 h-3.5" /> PDF
             </button>
             <button onClick={exportMarkdown} className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-violet-900/40 bg-violet-950/20 text-violet-300 text-xs font-bold hover:bg-violet-900/30 transition-colors min-h-[40px]">
               <BookOpen className="w-3.5 h-3.5" /> MD
